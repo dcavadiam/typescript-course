@@ -1,54 +1,30 @@
-export interface APIResponse {
-    id:       number;
-    name:     string;
-    username: string;
-    email:    string;
-    address:  Address;
-    phone:    string;
-    website:  string;
-    company:  Company;
+interface Avenger {
+    name: string;
+    powerScore: number;
+    wonBattles: number;
+    age: number;
 }
 
-export interface Address {
-    street:  string;
-    suite:   string;
-    city:    string;
-    zipcode: string;
-    geo:     Geo;
-}
+class Avenger implements Avenger {
 
-export interface Geo {
-    lat: string;
-    lng: string;
-}
-
-export interface Company {
-    name:        string;
-    catchPhrase: string;
-    bs:          string;
-}
-
-const API_URL = "https://jsonplaceholder.typicode.com/users";
-
-const response = await fetch(API_URL);
-if (!response.ok) {
-    throw new Error("Something went wrong");
-}
-
-const dataJson = await response.json();
-
-dataJson.map((item: APIResponse) => {
-    return {
-        id:       item.id,
-        name:     item.name,
-        username: item.username,
-        email:    item.email,
-        address:  item.address.city,
-        phone:    item.phone,
-        website:  item.website,
-        company:  item.company,
+    constructor(name: string,  powerScore: number) {
+        this.name = name;
+        this.powerScore = powerScore;
     }
-});
 
+    get fullName() {
+        return `${this.name}, the power score is ${this.powerScore}`;
+    }
 
+    set power(newPower: number) {
+        if (newPower > 100) {
+            this.powerScore = newPower;
+        } else {
+            throw new Error("The power score must be between 0 and 100");   
+        }
+    }
+}
 
+const ironMan = new Avenger("Iron Man", 100);
+
+ironMan.powerScore = 100;
